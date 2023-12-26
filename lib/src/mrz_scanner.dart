@@ -6,11 +6,15 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_mrz_scanner/src/camera_overlay.dart';
 import 'package:mrz_parser/mrz_parser.dart';
 
+const defaultRatio =
+    1.42; // Passport's size (ISO/IEC 7810 ID-3) is 125mm × 88mm
+
 /// MRZ scanner camera widget
 class MRZScanner extends StatelessWidget {
   const MRZScanner({
     required this.onControllerCreated,
     this.withOverlay = false,
+    this.overlayRatio = defaultRatio,
     Key? key,
   }) : super(key: key);
 
@@ -19,6 +23,8 @@ class MRZScanner extends StatelessWidget {
 
   /// Displays MRZ scanner overlay
   final bool withOverlay;
+
+  final double overlayRatio;
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +41,12 @@ class MRZScanner extends StatelessWidget {
                 creationParamsCodec: const StandardMessageCodec(),
               )
             : Text('$defaultTargetPlatform is not supported by this plugin');
-    return withOverlay ? CameraOverlay(child: scanner) : scanner;
+    return withOverlay
+        ? CameraOverlay(
+            child: scanner,
+            ratio: overlayRatio,
+          )
+        : scanner;
   }
 
   void onPlatformViewCreated(int id) {

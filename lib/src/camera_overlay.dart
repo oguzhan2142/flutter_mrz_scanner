@@ -4,11 +4,11 @@ class CameraOverlay extends StatelessWidget {
   const CameraOverlay({
     required this.child,
     Key? key,
+    required this.ratio,
   }) : super(key: key);
 
-  static const _documentFrameRatio =
-      1.42; // Passport's size (ISO/IEC 7810 ID-3) is 125mm × 88mm
   final Widget child;
+  final double ratio;
 
   @override
   Widget build(BuildContext context) {
@@ -38,10 +38,10 @@ class CameraOverlay extends StatelessWidget {
     double width, height;
     if (size.height > size.width) {
       width = size.width * 0.9;
-      height = width / _documentFrameRatio;
+      height = width / ratio;
     } else {
       height = size.height * 0.75;
-      width = height * _documentFrameRatio;
+      width = height * ratio;
     }
     final topOffset = (size.height - height) / 2;
     final leftOffset = (size.width - width) / 2;
